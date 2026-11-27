@@ -25,6 +25,8 @@ export type ApiData = {
   districts: Group[];
   blocks: Group[];
   trend: (Metrics & { month: string })[];
+  byGrade: Group[];
+  bySubject: Group[];
 };
 
 export type Milestone = { name: string; status: string; owner: string };

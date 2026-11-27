@@ -76,6 +76,16 @@ export async function GET(req: Request) {
     ),
   }));
 
+    // grade and subject breakdown for the selected scope
+  const byGrade = ["6", "7", "8"].map((g) => ({
+    name: `Class ${g}`,
+    ...computeMetrics(currRows, g, subject),
+  }));
+  const bySubject = ["Science", "Math"].map((s) => ({
+    name: s,
+    ...computeMetrics(currRows, grade, s),
+  }));
+
   return NextResponse.json({
     filters: { months, districts: districtList, blocks: blockList },
     selected: { month, district, block, grade, subject },
@@ -85,5 +95,7 @@ export async function GET(req: Request) {
     districts,
     blocks,
     trend,
+    byGrade,
+    bySubject,
   });
 }
