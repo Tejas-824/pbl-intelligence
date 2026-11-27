@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// one row = one school's response for one month
+model SchoolResponse {
+  id              Int     @id @default(autoincrement())
+  month           String  // "2025-07"
+  schoolName      String
+  schoolCode      String
+  district        String
+  block           String
+  conducted       Boolean // PBL project done this month
+  evidence        Boolean // evidence submitted
+  classes         String
+  subject         String
+
+  enrolled6       Int
+  sci6            Int
+  math6           Int
+  enrolled7       Int
+  sci7            Int
+  math7           Int
+  enrolled8       Int
+  sci8            Int
+  math8           Int
+
+  totalEnrollment Int
+  totalAttendance Int
+  attendanceRate  Float
+  riskStatus      String  // from CSV, we recompute ours in code
+
+  @@unique([month, schoolCode])
+  @@index([month, district, block])
+}
+
+model GrantFinance {
+  id                Int    @id @default(autoincrement())
+  grantId           String
+  donor             String
+  grantName         String
+  periodStart       String
+  periodEnd         String
+  coveredDistricts  String
+  month             String
+  budgetLine        String
+  approvedUnits     Float
+  monthlyUnits      Float
+  cumulativeUnits   Float
+  utilizationRate   Float
+  financeNote       String
+
+  @@index([grantId, month])
+}
+
+model GrantPerformance {
+  id                  Int    @id @default(autoincrement())
+  grantId             String
+  donor               String
+  grantName           String
+  month               String
+  periodEndDate       String
+  reportDueDate       String
+  reportStatus        String
+  coveredDistricts    String
+  sampledSchools      Int
+  schoolsCompleted    Int
+  completionRate      Float
+  schoolsWithEvidence Int
+  evidenceRate        Float
+  totalEnrollment     Int
+  totalAttendance     Int
+  attendanceRate      Float
+  riskStatus          String
+  milestoneSummary    String
+  draftReportText     String
+
+  @@unique([grantId, month])
+}
+
+model EvidenceMedia {
+  id          Int    @id @default(autoincrement())
+  recordId    String @unique
+  recordType  String
+  grantId     String
+  donor       String
+  month       String
+  district    String
+  title       String
+  caption     String
+  fileName    String
+  relativePath String
+  usageNote   String
+
+  @@index([grantId, month])
+}
