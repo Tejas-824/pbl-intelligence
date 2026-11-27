@@ -5,9 +5,9 @@ import { explainRisk } from "./risk";
 export type SummarySection = { heading: string; items: string[] };
 
 // one score per group so we can rank them
-const score = (g: Group) => (g.participationPct + g.evidencePct + g.attendancePct) / 3;
+export const score = (g: Group) => (g.participationPct + g.evidencePct + g.attendancePct) / 3;
 
-function weakest(g: Group) {
+export function weakest(g: Group) {
   const list = [
     { label: "participation", pct: g.participationPct },
     { label: "evidence submission", pct: g.evidencePct },
@@ -153,3 +153,4 @@ export function buildReviewSummary(d: ApiData) {
 
   return { title, sections, plainText };
 }
+
