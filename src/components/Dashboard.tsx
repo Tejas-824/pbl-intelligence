@@ -9,6 +9,7 @@ import { fmtNum, fmtPct } from "@/lib/format";
 import GeoPerformance from "./GeoPerformance";
 import TrendChart from "./TrendChart";
 import ReviewSummary from "./ReviewSummary";
+import ActionList from "./ActionList";
 
 const DEFAULT_QUERY: Query = {
   month: "", // empty = API picks the latest month
@@ -147,6 +148,7 @@ export default function Dashboard() {
       />
 
       <ReviewSummary data={data} />
+      <ActionList data={data} />
     </div>
   );
 }
