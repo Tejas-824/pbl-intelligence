@@ -7,6 +7,7 @@ import KpiCard from "./KpiCard";
 import { explainRisk } from "@/lib/risk";
 import { fmtNum, fmtPct } from "@/lib/format";
 import GeoPerformance from "./GeoPerformance";
+import TrendChart from "./TrendChart";
 
 const DEFAULT_QUERY: Query = {
   month: "", // empty = API picks the latest month
@@ -132,6 +133,8 @@ export default function Dashboard() {
           change={data.changes?.attendance}
         />
       </div>
+
+ <TrendChart trend={data.trend} />
 
       <GeoPerformance
         districts={data.districts}
