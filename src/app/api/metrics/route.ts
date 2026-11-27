@@ -60,6 +60,22 @@ export async function GET(req: Request) {
     ),
   ].sort();
 
+    // all months for the same district/block/grade/subject, for the trend chart
+  const scopeRows = await prisma.schoolResponse.findMany({
+    where: {
+      ...(district !== "all" && { district }),
+      ...(block !== "all" && { block }),
+    },
+  });
+  const trend = months.map((m) => ({
+    month: m,
+    ...computeMetrics(
+      scopeRows.filter((r) => r.month === m),
+      grade,
+      subject
+    ),
+  }));
+
   return NextResponse.json({
     filters: { months, districts: districtList, blocks: blockList },
     selected: { month, district, block, grade, subject },
@@ -68,5 +84,6 @@ export async function GET(req: Request) {
     changes,
     districts,
     blocks,
+    trend,
   });
 }

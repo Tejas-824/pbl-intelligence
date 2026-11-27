@@ -24,4 +24,5 @@ export type ApiData = {
   changes: Change | null;
   districts: Group[];
   blocks: Group[];
+  trend: (Metrics & { month: string })[];
 };
