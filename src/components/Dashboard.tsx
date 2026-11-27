@@ -6,6 +6,7 @@ import type { ApiData, Query } from "@/lib/types";
 import KpiCard from "./KpiCard";
 import { explainRisk } from "@/lib/risk";
 import { fmtNum, fmtPct } from "@/lib/format";
+import GeoPerformance from "./GeoPerformance";
 
 const DEFAULT_QUERY: Query = {
   month: "", // empty = API picks the latest month
@@ -131,6 +132,15 @@ export default function Dashboard() {
           change={data.changes?.attendance}
         />
       </div>
+
+      <GeoPerformance
+        districts={data.districts}
+        blocks={data.blocks}
+        onPick={(key, name) => {
+          handleChange(key, name);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
+      />
     </div>
   );
 }
