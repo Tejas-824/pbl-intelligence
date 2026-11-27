@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import Filters from "./Filters";
 import type { ApiData, Query } from "@/lib/types";
+import KpiCard from "./KpiCard";
+import { explainRisk } from "@/lib/risk";
+import { fmtNum, fmtPct } from "@/lib/format";
 
 const DEFAULT_QUERY: Query = {
   month: "", // empty = API picks the latest month
@@ -79,10 +82,54 @@ export default function Dashboard() {
         onReset={() => setQuery(DEFAULT_QUERY)}
       />
 
-      <div className={loading ? "opacity-50 transition" : "transition"}>
-        <p className="text-sm text-slate-600">
-          {data.current.totalSchools} schools in this view
-        </p>
+      <div
+        className={`grid gap-4 sm:grid-cols-2 lg:grid-cols-4 ${
+          loading ? "opacity-50 transition" : "transition"
+        }`}
+      >
+        <KpiCard label="Total schools" value={fmtNum(data.current.totalSchools)} />
+
+        <KpiCard
+          label="Participating schools"
+          value={fmtNum(data.current.participating)}
+          hint="ran PBL this month"
+        />
+
+        <KpiCard
+          label="Participation"
+          value={fmtPct(data.current.participationPct)}
+          risk={data.current.risk.participation}
+          explain={explainRisk("Participation", data.current.participationPct)}
+          change={data.changes?.participation}
+        />
+
+        <KpiCard
+          label="Evidence submission"
+          value={fmtPct(data.current.evidencePct)}
+          risk={data.current.risk.evidence}
+          explain={explainRisk("Evidence submission", data.current.evidencePct)}
+          change={data.changes?.evidence}
+        />
+
+        <KpiCard
+          label="Total enrollment"
+          value={fmtNum(data.current.enrollment)}
+          hint="students"
+        />
+
+        <KpiCard
+          label="Attendance"
+          value={fmtNum(data.current.attendance)}
+          hint="student sessions"
+        />
+
+        <KpiCard
+          label="Attendance rate"
+          value={fmtPct(data.current.attendancePct)}
+          risk={data.current.risk.attendance}
+          explain={explainRisk("Attendance", data.current.attendancePct)}
+          change={data.changes?.attendance}
+        />
       </div>
     </div>
   );
